@@ -21,6 +21,7 @@
     "nodemon": "^2.0.22",
     "pg": "^8.11.0",
     "pg-hstore": "^2.3.4",
+    "promise-mysql": "^5.2.0",
     "sequelize": "^6.32.0"
   }
 }

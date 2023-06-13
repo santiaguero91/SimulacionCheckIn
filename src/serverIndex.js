@@ -5,7 +5,7 @@ const markers = require("./routes/markers")
 
 
 router.use(bodyparser.json());
-router.use("/markers", markers)
+router.use("/", markers)
 
 
 

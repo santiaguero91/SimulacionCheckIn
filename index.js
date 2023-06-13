@@ -5,13 +5,13 @@ const router = require("./src/serverIndex")
 const {sequelize} = require("./db")
 const cors = require('cors');
 
-
 server.use(cors());
 server.use(router)
 
 
-sequelize.sync({ force: true }).then(()=>
+/* sequelize.sync({ force: false }).then(()=>
+ */
 server.listen(port, () => {
   console.log(`listening on port ${port}`)
 })
-)
+/* ) */
