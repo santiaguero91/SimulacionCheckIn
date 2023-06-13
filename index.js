@@ -30,8 +30,6 @@ const port = process.env.port || 3000;
    })
  })
 
-
-
  server.get("/", (req,res) => {
    const sql_query = `SELECT *
    FROM passenger `
