@@ -1,11 +1,18 @@
 const connection = require("../../db");
+const getSeats = require("../utils/getData/getSeats");
+const getBoardingPass = require("../utils/getData/getBoardingPass");
+const getFlight = require("../utils/getData/getFlight");
 
 
-const checkIn = async (req, res) => {
+const checkIn = (req, res) => {
     const { id } = req.params;
     const flightId = parseInt(id);
 
-    const sql_query = `SELECT * FROM boarding_pass 
+     const allSeats = getSeats(flightId);
+     const allBoardingPasses = getBoardingPass(flightId);
+     const allFlights = getFlight(flightId);
+
+/*     const sql_query = `SELECT * FROM boarding_pass 
     INNER JOIN passenger 
     ON boarding_pass.passenger_id = passenger.passenger_id
     INNER JOIN purchase 
@@ -19,11 +26,10 @@ const checkIn = async (req, res) => {
     INNER JOIN airplane 
     ON seat.airplane_id = airplane.airplane_id
     ;   
-`
+` */
 
 
-    connection.query (sql_query, (err,result)=> {
-      console.log(sql_query.length);
+    connection.query (allFlights, async (err,result)=> {
        if (err) throw err;
        res.send(result);
     }

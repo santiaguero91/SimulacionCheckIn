@@ -1,14 +1,10 @@
-const connection = require("../../../db");
 
-
-const getSeats = (id) => {
- const rows = connection.query(
-  `
+const getSeats = (flightId) => {
+ const rows =   `
     SELECT *
     FROM seat
-    WHERE airplane_id = ${id};
-  `
- );
+    WHERE airplane_id = ${flightId};
+  `;
 
  return rows;
 };
