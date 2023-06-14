@@ -1,5 +1,5 @@
 const {Router} = require("express");
-const connection = require("../db");
+const connection = require("../../db");
 
 const router = Router();
 

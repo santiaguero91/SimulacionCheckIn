@@ -1,48 +1,33 @@
-import { assignSeats } from '../utils/assingSeats.js';
-import { getFlightData } from '../utils/getData/getFlightData.js';
+const connection = require("../../db");
 
-export const checkIn = async (req, res) => {
+
+const checkIn = async (req, res) => {
     const { id } = req.params;
     const flightId = parseInt(id);
-   
-    try {
-     if (flightId !== 1 && flightId !== 2 && flightId !== 3 && flightId !== 4) {
-      throw new Error('flight not found');
-     }
-   
-     const passengers = await assignSeats(flightId);
-     const {
-      flight_id,
-      takeoff_date_time,
-      takeoff_airport,
-      landing_date_time,
-      landing_airport,
-      airplane_id,
-     } = await getFlightData(flightId);
-   
-     return res.json({
-      code: 200,
-      data: {
-       flightId: flight_id,
-       takeoffDateTime: takeoff_date_time,
-       takeoffAirport: takeoff_airport,
-       landingDateTime: landing_date_time,
-       landingAirport: landing_airport,
-       airplaneId: airplane_id,
-       passengers: passengers,
-      },
-     });
-    } catch (error) {
-     console.error(error);
-     if (error.message === 'flight not found') {
-      return res.status(404).json({
-       code: 404,
-       data: {},
-      });
-     }
-     return res.status(400).json({
-      code: 400,
-      errors: 'could not connect to db',
-     });
+
+    const sql_query = `SELECT * FROM boarding_pass 
+    INNER JOIN passenger 
+    ON boarding_pass.passenger_id = passenger.passenger_id
+    INNER JOIN purchase 
+    ON boarding_pass.purchase_id = purchase.purchase_id
+    INNER JOIN seat 
+    ON boarding_pass.seat_id = seat.seat_id
+    INNER JOIN seat_type 
+    ON boarding_pass.seat_type_id = seat_type.seat_type_id
+    INNER JOIN flight 
+    ON boarding_pass.flight_id = flight.flight_id
+    INNER JOIN airplane 
+    ON seat.airplane_id = airplane.airplane_id
+    ;   
+`
+
+
+    connection.query (sql_query, (err,result)=> {
+      console.log(sql_query.length);
+       if (err) throw err;
+       res.send(result);
     }
-   };
+    )
+  };
+
+  module.exports = checkIn;
