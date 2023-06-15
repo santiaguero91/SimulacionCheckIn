@@ -1,4 +1,4 @@
-const connection = require("../../db");
+const connection = require("../../../db");
 
 const getMinors = (flightId) => {
     return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ const getMinors = (flightId) => {
             ON boarding_pass.flight_id = flight.flight_id
             INNER JOIN passenger 
             ON boarding_pass.passenger_id = passenger.passenger_id
-                 WHERE age < 18 AND flight.flight_id = ${flightId}
+            WHERE age < 18 AND flight.flight_id = ${flightId}
           `,
           (err, result) => {
             if (err) {
