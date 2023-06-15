@@ -12,8 +12,7 @@ const checkIn =  async (req, res) => {
 
      const allFlights = await getFlight(flightId);
      const allPassenger = await getPassengers(flightId);
-     console.log(allFlights);
-
+console.log(allFlights);
 
      
      const allSeats = getSeats(flightId);

@@ -1,14 +1,18 @@
 const connection = require("../../../db");
 
-const getFlight = async (flightId) => {
-  const flights = `
-       SELECT *
-       FROM flight
+const getFlight = (flightId) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`
+      SELECT *
+      FROM flight
       WHERE flight_id=${flightId}
-     `;
-
-  connection.query(flights, (err, result) => {
-    return result;
+    `, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
   });
 };
 
