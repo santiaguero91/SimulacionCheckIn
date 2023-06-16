@@ -11,9 +11,16 @@ function findPassengerWithMinorsByPurchaseId(minors, passengers) {
 
 function filterPassengersWithNoMinors(minors, passengers) {
   const minorPurchaseIds = minors.map((minor) => minor.purchase_id);
+  const idCounts = {};
+  passengers.forEach((passenger) => {
+    if (!minorPurchaseIds.includes(passenger.purchase_id)) {
+      idCounts[passenger.purchase_id] = (idCounts[passenger.purchase_id] || 0) + 1;
+    }
+  });
+
   return passengers
     .filter((passenger) => !minorPurchaseIds.includes(passenger.purchase_id))
-    .sort((a, b) => a.purchase_id - b.purchase_id);
+    .sort((a, b) => idCounts[b.purchase_id] - idCounts[a.purchase_id]);
 }
 
 
