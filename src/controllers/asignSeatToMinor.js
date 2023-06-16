@@ -22,6 +22,8 @@ const asignSeatToMinor = async (req, res) => {
 
 //get passengers and group them
 
+
+  const flights = await getFlight(flightId);
   const passengers = await getPassengers(flightId); //funciona bien me trae todos los menores.
   const minors = await getMinors(flightId); //funciona bien me trae todos los menores.
   const GroupswithMinorsByPurchaseID = await findPassengerWithMinorsByPurchaseId(minors, passengers);  // funciona bien me da los grupos CON menores y en rden segun su ticket de compra.

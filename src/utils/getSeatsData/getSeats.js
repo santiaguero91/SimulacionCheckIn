@@ -9,7 +9,9 @@ const getSeats = (flightId) => {
       FROM seat
       INNER JOIN airplane 
       ON seat.airplane_id = airplane.airplane_id
-      WHERE seat.airplane_id = ${flightId};
+      INNER JOIN flight 
+      ON seat.airplane_id = flight.airplane_id
+      WHERE flight.flight_id = ${flightId};
     `,
       (err, result) => {
         if (err) {

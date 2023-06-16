@@ -6,6 +6,8 @@ const asignSeatToMinor = require("../controllers/asignSeatToMinor");
 const router = Router();
 
 
-router.get('/:id', asignSeatToMinor);
+/* router.get('/:id', asignSeatToMinor); */  //este es el bueno
+
+router.get('/:id', checkIn);
 
 module.exports = router;
