@@ -16,38 +16,56 @@ const groupSeats = require("../utils/ordenar asientos/sortSeats2");
 
 
 const asignSeatToMinor = async (req, res) => {
-
   const { id } = req.params;
   const flightId = parseInt(id);
 
+  try {
+    if (flightId !== 1 && flightId !== 2 && flightId !== 3 && flightId !== 4) {
+     throw new Error('flight not found');
+    }
 //get passengers and group them
 
+const flight = await getFlight(flightId); 
+  const passengers = await getPassengers(flightId); 
+  const minors = await getMinors(flightId); 
+  const GroupswithMinorsByPurchaseID = await findPassengerWithMinorsByPurchaseId(minors, passengers); 
+  const getGroupsWithNoMinors = await filterPassengersWithNoMinors(minors, passengers);
 
-  const flights = await getFlight(flightId);
-  const passengers = await getPassengers(flightId); //funciona bien me trae todos los menores.
-  const minors = await getMinors(flightId); //funciona bien me trae todos los menores.
-  const GroupswithMinorsByPurchaseID = await findPassengerWithMinorsByPurchaseId(minors, passengers);  // funciona bien me da los grupos CON menores y en rden segun su ticket de compra.
-  const getGroupsWithNoMinors = await filterPassengersWithNoMinors(minors, passengers);    // funciona bien me da los grupos SIN menores y en rden segun su ticket de compra y ordenados en grupos de mas grande a mas chico.
-
-
-
-
-// GET SEATS and kinda sort them out
-  const allSeats = await getSeats(flightId); //funciona bien me trae todos los asientos.
-  const sortSeats = await getAvailableSeats(flightId, allSeats); 
-  const sortSeats2 = await groupSeats(allSeats);  // funciona bien masomenos el ordenamiento.
-
-
+// GET SEATS 
+  const allSeats = await getSeats(flightId); 
 
 //assign seats 
-
-const assignedSeats = await assignSeats(allSeats, GroupswithMinorsByPurchaseID, getGroupsWithNoMinors); //funciona bien me trae todos los asientos.
-
+const passengersAssignedSeats = await assignSeats(allSeats, GroupswithMinorsByPurchaseID, getGroupsWithNoMinors);
 
 
 
-res.status(200).send(assignedSeats)
 
+return res.json({
+  code: 200,
+  data: {
+   flightId: flight[0].flight_id,
+   takeoffDateTime: flight[0].takeoffDateTime,
+   takeoffAirport: flight[0].takeoffAirport,
+   landingDateTime: flight[0].landingDateTime,
+   landingAirport: flight[0].landingAirport,
+   airplaneId: flight[0].airplaneId,
+   passengers: passengersAssignedSeats,
+  },
+ });
+
+} catch (error) {
+  console.error(error);
+  if (error.message === 'flight not found') {
+   return res.status(404).json({
+    code: 404,
+    data: {},
+   });
+  }
+  return res.status(400).json({
+   code: 400,
+   errors: 'could not connect to db',
+  });
+ }
 };
 
 module.exports = asignSeatToMinor;
