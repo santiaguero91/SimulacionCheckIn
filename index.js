@@ -19,4 +19,3 @@ const PORT = process.env.PORT || 3001;
 
  server.use('/', routes);
 
- module.exports = connection
