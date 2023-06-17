@@ -36,6 +36,8 @@ const checkInController = async (req, res) => {
       getGroupsWithNoMinors
     );
 
+
+
     return res.json({
       code: 200,
       data: {
