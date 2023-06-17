@@ -16,7 +16,7 @@ const getMinors = (flightId) => {
             if (err) {
               reject(err);
             } else {
-                console.log(result.length);
+                console.log(result.length , "minors found");
               resolve(result);
             }
           }
