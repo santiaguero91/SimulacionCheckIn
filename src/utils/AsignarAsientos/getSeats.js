@@ -1,4 +1,3 @@
-const connection = require("../../../db");
 
   function assignSeats(sortSeats2, GroupswithMinorsByPurchaseID, getGroupsWithNoMinors) {
     // Create a copy of the sortSeats2 array to track the available seats

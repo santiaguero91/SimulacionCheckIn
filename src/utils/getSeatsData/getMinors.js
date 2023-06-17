@@ -1,8 +1,8 @@
-const connection = require("../../../db");
+const {pool} = require("../../../db");
 
 const getMinors = (flightId) => {
     return new Promise((resolve, reject) => {
-        connection.query(
+      pool.query(
             `
             SELECT *
             FROM boarding_pass

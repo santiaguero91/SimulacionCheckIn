@@ -2,19 +2,19 @@ require('dotenv').config();
 const express = require('express')
 const server = express()
 const routes = require('./src/routes/index');
-const connection = require('./db');
+const {connection} = require('./db');
 
 
 
 
-const port = process.env.port || 3000;
+const PORT = process.env.PORT || 3001;
 
- server.listen(port, () => {
-   console.log(`listening on port ${port}`)
-   connection.connect((err)=>{
+ server.listen(PORT, () => {
+   console.log(`listening on port ${PORT}`)
+    connection.connect((err)=>{
     if(err) console.log(err); ;
     console.log("database conected");
-   })
+   }) 
  })
 
  server.use('/', routes);
