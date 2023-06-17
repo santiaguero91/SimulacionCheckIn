@@ -1,6 +1,7 @@
 const assignSeats = require("../utils/AsignarAsientos/getSeats");
 const getFlight = require("../utils/getData/getFlight");
 const getPassengers = require("../utils/getData/getPassengers");
+const processPassengersData = require("../utils/getData/processPassengersData");
 const {
   findPassengerWithMinorsByPurchaseId,
   filterPassengersWithNoMinors,
@@ -39,7 +40,10 @@ const checkInController = async (req, res) => {
       getGroupsWithNoMinors
     );
 
+
+    const processedPassengersData = await processPassengersData(passengersAssignedSeats);
  
+
     return res.json({
       code: 200,
       data: {
@@ -49,7 +53,7 @@ const checkInController = async (req, res) => {
         landingDateTime: flight[0].landing_date_time,
         landingAirport: flight[0].landing_airport,
         airplaneId: flight[0].airplane_id,
-        passengers: passengersAssignedSeats,
+        passengers: processedPassengersData,
       },
     });
   } catch (error) {
