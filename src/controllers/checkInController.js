@@ -15,7 +15,10 @@ const checkInController = async (req, res) => {
   const flightId = parseInt(id);
   try {
     if (flightId !== 1 && flightId !== 2 && flightId !== 3 && flightId !== 4) {
-      throw new Error("flight not found");
+      return res.status(404).json({
+        code: 404,
+        data: {},
+      });
     }
     //get passengers and group them
     const flight = await getFlight(flightId);
