@@ -7,6 +7,7 @@ const {
 } = require("../utils/getSeatsData/getMinorGuardian");
 const getMinors = require("../utils/getSeatsData/getMinors");
 const getSeats = require("../utils/getSeatsData/getSeats");
+const groupSeats = require("../utils/ordenar asientos/sortSeats2");
 
 const checkInController = async (req, res) => {
   const { id } = req.params;
@@ -28,16 +29,17 @@ const checkInController = async (req, res) => {
 
     // GET SEATS
     const allSeats = await getSeats(flightId);
+    const groupedSeats = await groupSeats(allSeats);
+
 
     //assign seats
     const passengersAssignedSeats = await assignSeats(
-      allSeats,
+      groupedSeats,
       GroupswithMinorsByPurchaseID,
       getGroupsWithNoMinors
     );
 
-
-
+ 
     return res.json({
       code: 200,
       data: {
